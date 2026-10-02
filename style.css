@@ -1,0 +1,376 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+body {
+    font-family: 'Georgia', 'Segoe UI', serif;
+    background: #ffe6f0;
+    min-height: 100vh;
+    overflow-x: hidden;
+    touch-action: manipulation;
+}
+
+.page {
+    display: none;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+}
+
+.page.active {
+    display: block;
+}
+
+/* ========== LOGIN PAGE ========== */
+#login-page {
+    background: linear-gradient(180deg, #fff5f7 0%, #ffe8ef 50%, #ffd6e7 100%);
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 15px;
+    min-height: 100vh;
+}
+
+#login-page:not(.active) {
+    display: none !important;
+}
+
+.login-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    width: 100%;
+    max-width: 420px;
+    z-index: 2;
+}
+
+.hearts-frames {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.heart-frame {
+    width: 140px;
+    height: 130px;
+    background: #fff;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 7px solid #f8bbd9;
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    box-shadow:
+        0 0 0 3px #fff,
+        0 0 0 7px #fce4ec,
+        0 0 0 10px #f8bbd9,
+        0 6px 18px rgba(244, 143, 177, 0.3);
+}
+
+.heart-frame .bow-top {
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 24px;
+    z-index: 5;
+}
+
+.empty-heart {
+    width: 85%;
+    height: 85%;
+    background: linear-gradient(160deg, #fff9fb, #ffeef4);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    border: 2px dashed #f8bbd9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-heart::after {
+    content: '♡';
+    font-size: 40px;
+    color: #f8bbd9;
+    opacity: 0.5;
+}
+
+.left-heart { transform: rotate(-5deg); }
+.right-heart { transform: rotate(5deg); margin-left: -15px; }
+
+.code-section {
+    text-align: center;
+    width: 100%;
+}
+
+.code-title {
+    font-family: Georgia, serif;
+    font-style: italic;
+    color: #c2185b;
+    font-size: 1.5rem;
+    margin-bottom: 18px;
+}
+
+.heart-icon { color: #ec407a; }
+
+.code-display {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 22px;
+}
+
+.code-dot {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: #fff;
+    border: 2px solid #f8bbd9;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: #f8bbd9;
+    transition: all 0.2s;
+}
+
+.code-dot.filled {
+    background: #fff0f5;
+    border-color: #ec407a;
+    color: #ec407a;
+    box-shadow: 0 0 8px rgba(236, 64, 122, 0.4);
+}
+
+.code-display.shake {
+    animation: shake 0.4s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+.keypad {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    max-width: 260px;
+    margin: 0 auto;
+}
+
+.key {
+    height: 50px;
+    border-radius: 16px;
+    border: none;
+    background: #fffafc;
+    color: #ad1457;
+    font-size: 1.4rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(244, 143, 177, 0.2);
+    transition: all 0.15s;
+}
+
+.key:active {
+    transform: scale(0.94);
+    background: #ffe4ec;
+}
+
+.key-clear {
+    background: #fff5f8;
+}
+
+.key-enter {
+    background: #f48fb1;
+    color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    margin: 0 auto;
+    justify-self: center;
+}
+
+.key-enter:active {
+    background: #ec407a;
+}
+
+.decorations {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.deco-bow {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 42px;
+    opacity: 0.85;
+}
+
+.deco-star {
+    position: absolute;
+    bottom: 30px;
+    left: 20px;
+    font-size: 26px;
+    opacity: 0.7;
+}
+
+.deco-heart {
+    position: absolute;
+    bottom: 40px;
+    right: 25px;
+    font-size: 22px;
+    opacity: 0.6;
+}
+
+/* ========== FULL IMAGE PAGES ========== */
+.full-image-page {
+    width: 100%;
+    min-height: 100vh;
+    background-size: contain;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #ffe6f0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (min-width: 700px) {
+    .full-image-page {
+        background-size: contain;
+        max-height: 100vh;
+    }
+}
+
+/* ========== GIFTS HOTSPOTS ========== */
+.gift-hotspot {
+    position: absolute;
+    bottom: 18%;
+    width: 28%;
+    height: 38%;
+    cursor: pointer;
+}
+
+.left-gift {
+    left: 5%;
+}
+
+.middle-gift {
+    left: 36%;
+}
+
+.right-gift {
+    right: 5%;
+    left: auto;
+}
+
+/* ========== NEXT BUTTON ========== */
+.next-btn {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    background: rgba(255, 255, 255, 0.92);
+    border: 2px solid #f8bbd9;
+    color: #c2185b;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    z-index: 20;
+    backdrop-filter: blur(4px);
+}
+
+.next-btn:active {
+    background: #f48fb1;
+    color: white;
+}
+
+/* ========== AUDIO OVERLAY ========== */
+.audio-overlay {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+}
+
+.audio-btn {
+    background: rgba(236, 64, 122, 0.92);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 40px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 6px 20px rgba(236, 64, 122, 0.4);
+    backdrop-filter: blur(4px);
+}
+
+.audio-btn:active {
+    transform: scale(0.96);
+}
+
+/* ========== MOBILE ========== */
+@media (max-width: 480px) {
+    .heart-frame {
+        width: 115px;
+        height: 108px;
+    }
+    .code-title {
+        font-size: 1.3rem;
+    }
+    .code-dot {
+        width: 34px;
+        height: 34px;
+        font-size: 14px;
+    }
+    .key {
+        height: 48px;
+        font-size: 1.3rem;
+    }
+    .keypad {
+        max-width: 240px;
+        gap: 10px;
+    }
+    .gift-hotspot {
+        bottom: 15%;
+        height: 42%;
+        width: 30%;
+    }
+    .left-gift { left: 3%; }
+    .middle-gift { left: 35%; }
+    .right-gift { right: 3%; }
+    .next-btn {
+        top: 12px;
+        right: 12px;
+        padding: 9px 18px;
+        font-size: 0.95rem;
+    }
+    .audio-btn {
+        padding: 12px 26px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 360px) {
+    .hearts-frames { gap: 4px; }
+    .heart-frame {
+        width: 100px;
+        height: 95px;
+    }
+    .empty-heart::after {
+        font-size: 32px;
+    }
+}

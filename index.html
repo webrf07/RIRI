@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>A Playlist Made For You</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ========== LOGIN PAGE ========== -->
+    <div id="login-page" class="page active">
+        <div class="login-wrapper">
+            <div class="hearts-frames">
+                <div class="heart-frame left-heart">
+                    <span class="bow-top">🎀</span>
+                    <div class="empty-heart"></div>
+                </div>
+                <div class="heart-frame right-heart">
+                    <span class="bow-top">🎀</span>
+                    <div class="empty-heart"></div>
+                </div>
+            </div>
+
+            <div class="code-section">
+                <h2 class="code-title">Enter our secret code <span class="heart-icon">❤️</span></h2>
+                
+                <div class="code-display">
+                    <div class="code-dot" id="dot1">♡</div>
+                    <div class="code-dot" id="dot2">♡</div>
+                    <div class="code-dot" id="dot3">♡</div>
+                    <div class="code-dot" id="dot4">♡</div>
+                    <div class="code-dot" id="dot5">♡</div>
+                    <div class="code-dot" id="dot6">♡</div>
+                </div>
+
+                <div class="keypad">
+                    <button class="key" onclick="pressKey('1')">1</button>
+                    <button class="key" onclick="pressKey('2')">2</button>
+                    <button class="key" onclick="pressKey('3')">3</button>
+                    <button class="key" onclick="pressKey('4')">4</button>
+                    <button class="key" onclick="pressKey('5')">5</button>
+                    <button class="key" onclick="pressKey('6')">6</button>
+                    <button class="key" onclick="pressKey('7')">7</button>
+                    <button class="key" onclick="pressKey('8')">8</button>
+                    <button class="key" onclick="pressKey('9')">9</button>
+                    <button class="key key-clear" onclick="clearCode()">⌫</button>
+                    <button class="key" onclick="pressKey('0')">0</button>
+                    <button class="key key-enter" onclick="checkCode()">✓</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="decorations">
+            <span class="deco-bow">🎀</span>
+            <span class="deco-star">✨</span>
+            <span class="deco-heart">💕</span>
+        </div>
+    </div>
+
+    <!-- ========== GIFTS PAGE ========== -->
+    <div id="gifts-page" class="page">
+        <div class="full-image-page" style="background-image: url('gifts.jpg');">
+            <div class="gift-hotspot left-gift" onclick="openGift(1)"></div>
+            <div class="gift-hotspot middle-gift" onclick="openGift(2)"></div>
+            <div class="gift-hotspot right-gift" onclick="openGift(3)"></div>
+        </div>
+    </div>
+
+    <!-- ========== LETTER PAGE ========== -->
+    <div id="letter-page" class="page">
+        <div class="full-image-page" style="background-image: url('letter.jpg');">
+            <button class="next-btn" onclick="goToGifts()">Next →</button>
+        </div>
+    </div>
+
+    <!-- ========== PLAYLIST PAGE ========== -->
+    <div id="playlist-page" class="page">
+        <div class="full-image-page" style="background-image: url('playlist.jpg');">
+            <button class="next-btn" onclick="goToGifts()">Next →</button>
+            <div class="audio-overlay">
+                <button class="audio-btn" id="play-btn" onclick="togglePlay()">▶ Play Lover</button>
+            </div>
+        </div>
+        <audio id="audio" src="lover.mp3" preload="auto"></audio>
+    </div>
+
+    <!-- ========== TULIPS PAGE ========== -->
+    <div id="tulips-page" class="page">
+        <div class="full-image-page" style="background-image: url('tulips.jpg');">
+            <button class="next-btn" onclick="goToGifts()">Next →</button>
+        </div>
+    </div>
+
+    <script>
+        let enteredCode = '';
+        const correctCode = '071115';
+        const dots = ['dot1','dot2','dot3','dot4','dot5','dot6'];
+
+        function pressKey(num) {
+            if (enteredCode.length < 6) {
+                enteredCode += num;
+                updateDots();
+                if (enteredCode.length === 6) {
+                    setTimeout(checkCode, 250);
+                }
+            }
+        }
+
+        function clearCode() {
+            enteredCode = '';
+            updateDots();
+        }
+
+        function updateDots() {
+            for (let i = 0; i < 6; i++) {
+                const dot = document.getElementById(dots[i]);
+                if (i < enteredCode.length) {
+                    dot.classList.add('filled');
+                    dot.innerHTML = '❤️';
+                } else {
+                    dot.classList.remove('filled');
+                    dot.innerHTML = '♡';
+                }
+            }
+        }
+
+        function checkCode() {
+            if (enteredCode === correctCode) {
+                showPage('gifts-page');
+            } else {
+                const display = document.querySelector('.code-display');
+                display.classList.add('shake');
+                setTimeout(() => {
+                    display.classList.remove('shake');
+                    clearCode();
+                }, 450);
+            }
+        }
+
+        function openGift(num) {
+            if (num === 1) showPage('letter-page');
+            else if (num === 2) showPage('playlist-page');
+            else if (num === 3) showPage('tulips-page');
+        }
+
+        function goToGifts() {
+            const audio = document.getElementById('audio');
+            if (audio) {
+                audio.pause();
+                audio.currentTime = 0;
+            }
+            const btn = document.getElementById('play-btn');
+            if (btn) btn.textContent = '▶ Play Lover';
+            showPage('gifts-page');
+        }
+
+        function showPage(id) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+        }
+
+        const audio = document.getElementById('audio');
+        const playBtn = document.getElementById('play-btn');
+
+        function togglePlay() {
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸ Pause';
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶ Play Lover';
+            }
+        }
+
+        audio.addEventListener('ended', () => {
+            playBtn.textContent = '▶ Play Lover';
+        });
+    </script>
+</body>
+</html>
