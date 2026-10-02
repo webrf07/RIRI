@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Playlist Made For You</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- LOGIN PAGE -->
+    <div id="login-page" class="page active">
+        <div class="login-container">
+            <div class="hearts-frames">
+                <div class="heart-frame left-heart">
+                    <div class="empty-heart"></div>
+                </div>
+                <div class="heart-frame right-heart">
+                    <div class="empty-heart"></div>
+                </div>
+            </div>
+            <div class="code-section">
+                <h2 class="code-title">Enter our secret code <span class="heart-icon">❤️</span></h2>
+                <div class="code-display">
+                    <div class="code-dot" id="dot1"></div>
+                    <div class="code-dot" id="dot2"></div>
+                    <div class="code-dot" id="dot3"></div>
+                    <div class="code-dot" id="dot4"></div>
+                    <div class="code-dot" id="dot5"></div>
+                    <div class="code-dot" id="dot6"></div>
+                </div>
+                <div class="keypad">
+                    <button class="key" onclick="pressKey('1')">1</button>
+                    <button class="key" onclick="pressKey('2')">2</button>
+                    <button class="key" onclick="pressKey('3')">3</button>
+                    <button class="key" onclick="pressKey('4')">4</button>
+                    <button class="key" onclick="pressKey('5')">5</button>
+                    <button class="key" onclick="pressKey('6')">6</button>
+                    <button class="key" onclick="pressKey('7')">7</button>
+                    <button class="key" onclick="pressKey('8')">8</button>
+                    <button class="key" onclick="pressKey('9')">9</button>
+                    <button class="key key-clear" onclick="clearCode()">⌫</button>
+                    <button class="key" onclick="pressKey('0')">0</button>
+                    <button class="key key-enter" onclick="checkCode()">✓</button>
+                </div>
+            </div>
+        </div>
+        <div class="decorations">
+            <span class="bow top-right">🎀</span>
+            <span class="star bottom-left">✨</span>
+            <span class="heart-deco bottom-right">💕</span>
+        </div>
+    </div>
+
+    <!-- GIFTS PAGE -->
+    <div id="gifts-page" class="page">
+        <div class="gifts-header">
+            <h1>You unlocked it</h1>
+            <p>Your surprises are waiting for you</p>
+        </div>
+        <div class="gifts-container">
+            <div class="gift" onclick="openGift(1)">
+                <div class="gift-box">
+                    <div class="gift-lid"></div>
+                    <div class="gift-body"></div>
+                    <div class="gift-bow">🎀</div>
+                </div>
+            </div>
+            <div class="gift" onclick="openGift(2)">
+                <div class="gift-box">
+                    <div class="gift-lid"></div>
+                    <div class="gift-body"></div>
+                    <div class="gift-bow">🎀</div>
+                </div>
+            </div>
+            <div class="gift" onclick="openGift(3)">
+                <div class="gift-box">
+                    <div class="gift-lid"></div>
+                    <div class="gift-body"></div>
+                    <div class="gift-bow">🎀</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- LETTER PAGE (Left Gift) -->
+    <div id="letter-page" class="page">
+        <button class="next-btn" onclick="goToGifts()">Next →</button>
+        <div class="letter-container">
+            <h1 class="letter-title">A Letter From My Heart</h1>
+            <div class="letter-paper">
+                <p>You make my life feel more beautiful and meaningful, and I feel so lucky to have you. I love you wholeheartedly, and I can't wait to continue loving you for the rest of my life.</p>
+                <p>You make me smile, you make me feel safe, and you bring so much happiness into my world. I know I tell you this every day, but you truly are the most beautiful person in my eyes.</p>
+                <p>Thank you for being you and for filling my heart with so much love. No matter what happens, I will always choose you.</p>
+                <p class="letter-sign">Always, forever. ❤️</p>
+            </div>
+            <div class="cat-deco">
+                <div class="cat-emoji">🐱❤️</div>
+            </div>
+            <div class="flowers-deco">🌸🌸🌸</div>
+        </div>
+    </div>
+
+    <!-- PLAYLIST PAGE (Middle Gift) -->
+    <div id="playlist-page" class="page">
+        <button class="next-btn" onclick="goToGifts()">Next →</button>
+        <div class="playlist-container">
+            <div class="player-side">
+                <div class="music-player">
+                    <div class="album-art">
+                        <div class="album-cover">
+                            <span class="album-title">LOVER</span>
+                            <span class="album-artist">TAYLOR SWIFT</span>
+                        </div>
+                    </div>
+                    <div class="player-controls">
+                        <div class="progress-bar">
+                            <div class="progress" id="progress"></div>
+                        </div>
+                        <div class="time">
+                            <span id="current-time">0:00</span>
+                            <span id="duration">3:49</span>
+                        </div>
+                        <div class="controls">
+                            <button class="ctrl-btn" onclick="prevTrack()">⏮</button>
+                            <button class="ctrl-btn play-btn" id="play-btn" onclick="togglePlay()">▶</button>
+                            <button class="ctrl-btn" onclick="nextTrack()">⏭</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="vinyl-side">
+                <h1 class="playlist-title">A Playlist Made For You</h1>
+                <p class="playlist-sub">Songs that somehow sound like us</p>
+                <div class="vinyl">
+                    <div class="vinyl-disk">
+                        <div class="vinyl-center"></div>
+                    </div>
+                </div>
+                <div class="music-notes">🎵🎶</div>
+            </div>
+        </div>
+        <audio id="audio" src="lover.mp3"></audio>
+    </div>
+
+    <!-- TULIPS PAGE (Right Gift) -->
+    <div id="tulips-page" class="page">
+        <button class="next-btn" onclick="goToGifts()">Next →</button>
+        <div class="tulips-container">
+            <h1 class="tulips-title">Your Favorite Tulips</h1>
+            <div class="tulips-content">
+                <div class="messages-left">
+                    <div class="msg-bubble">You make my heart bloom.</div>
+                    <div class="msg-bubble">Life feels sweeter with you</div>
+                    <div class="msg-bubble">You make every moment sweeter.</div>
+                </div>
+                <div class="bouquet">
+                    <div class="tulip-bouquet">
+                        <div class="tulips">🌷🌷🌷🌷🌷</div>
+                        <div class="ribbon">🎀</div>
+                        <div class="tag">❤️</div>
+                    </div>
+                </div>
+                <div class="messages-right">
+                    <div class="msg-bubble">I choose you every day</div>
+                    <div class="msg-bubble">My love for you keeps growing</div>
+                    <div class="msg-bubble">My heart will always choose you</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let enteredCode = '';
+        const correctCode = '071115';
+        const dots = ['dot1','dot2','dot3','dot4','dot5','dot6'];
+
+        function pressKey(num) {
+            if (enteredCode.length < 6) {
+                enteredCode += num;
+                updateDots();
+                if (enteredCode.length === 6) {
+                    setTimeout(checkCode, 300);
+                }
+            }
+        }
+
+        function clearCode() {
+            enteredCode = '';
+            updateDots();
+        }
+
+        function updateDots() {
+            for (let i = 0; i < 6; i++) {
+                const dot = document.getElementById(dots[i]);
+                if (i < enteredCode.length) {
+                    dot.classList.add('filled');
+                    dot.innerHTML = '❤️';
+                } else {
+                    dot.classList.remove('filled');
+                    dot.innerHTML = '';
+                }
+            }
+        }
+
+        function checkCode() {
+            if (enteredCode === correctCode) {
+                document.getElementById('login-page').classList.remove('active');
+                document.getElementById('gifts-page').classList.add('active');
+            } else {
+                const display = document.querySelector('.code-display');
+                display.classList.add('shake');
+                setTimeout(() => {
+                    display.classList.remove('shake');
+                    clearCode();
+                }, 500);
+            }
+        }
+
+        function openGift(num) {
+            document.getElementById('gifts-page').classList.remove('active');
+            if (num === 1) {
+                document.getElementById('letter-page').classList.add('active');
+            } else if (num === 2) {
+                document.getElementById('playlist-page').classList.add('active');
+            } else if (num === 3) {
+                document.getElementById('tulips-page').classList.add('active');
+            }
+        }
+
+        function goToGifts() {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.getElementById('gifts-page').classList.add('active');
+            const audio = document.getElementById('audio');
+            audio.pause();
+            document.getElementById('play-btn').textContent = '▶';
+            document.querySelector('.vinyl-disk').classList.remove('playing');
+        }
+
+        const audio = document.getElementById('audio');
+        const playBtn = document.getElementById('play-btn');
+        const progress = document.getElementById('progress');
+        const currentTimeEl = document.getElementById('current-time');
+
+        function togglePlay() {
+            const vinyl = document.querySelector('.vinyl-disk');
+            if (audio.paused) {
+                audio.play();
+                playBtn.textContent = '⏸';
+                vinyl.classList.add('playing');
+            } else {
+                audio.pause();
+                playBtn.textContent = '▶';
+                vinyl.classList.remove('playing');
+            }
+        }
+
+        audio.addEventListener('timeupdate', () => {
+            const percent = (audio.currentTime / audio.duration) * 100;
+            progress.style.width = percent + '%';
+            currentTimeEl.textContent = formatTime(audio.currentTime);
+        });
+
+        audio.addEventListener('ended', () => {
+            playBtn.textContent = '▶';
+            progress.style.width = '0%';
+            document.querySelector('.vinyl-disk').classList.remove('playing');
+        });
+
+        function formatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return m + ':' + (s < 10 ? '0' : '') + s;
+        }
+
+        function prevTrack() {
+            audio.currentTime = 0;
+        }
+
+        function nextTrack() {
+            audio.currentTime = audio.duration;
+        }
+    </script>
+</body>
+</html>
