@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RIRI & RAOUF</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:Georgia,serif;overflow:hidden;height:100vh;width:100vw;background:#fff5f5}
+
+#s1{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#fff0f3,#ffe4ec 45%,#ffd6e0);z-index:10}
+.ht{position:relative;width:240px;height:140px;margin-bottom:14px}
+.ha,.hb{position:absolute;width:130px;height:115px;display:flex;align-items:center;justify-content:center;
+  color:#fff;font-weight:bold;font-size:26px;text-shadow:0 2px 6px rgba(180,30,80,.5);
+  filter:drop-shadow(0 6px 14px rgba(255,100,140,.4))}
+.ha::before,.ha::after,.hb::before,.hb::after{content:'';position:absolute;z-index:-1;
+  background:radial-gradient(circle at 30% 30%,#ff9eb5,#ff6b8a 55%,#e84a6f)}
+.ha::before,.hb::before{width:66px;height:105px;left:50%;bottom:8px;
+  transform:translateX(-78%) rotate(-45deg);border-radius:66px 66px 0 0}
+.ha::after,.hb::after{width:66px;height:105px;left:50%;bottom:8px;
+  transform:translateX(-22%) rotate(45deg);border-radius:66px 66px 0 0}
+.ha{left:0;top:0;transform:rotate(-12deg);z-index:2}
+.hb{right:0;top:18px;transform:rotate(10deg);z-index:1}
+.ha span,.hb span{position:relative;z-index:2;margin-top:10px;
+  font-family:'Brush Script MT','Segoe Script',cursive;font-size:26px}
+.tt{font-size:16px;color:#c45a7a;margin-bottom:10px}
+.dots{display:flex;gap:7px;margin-bottom:12px}
+.dot{width:38px;height:46px;border:2px solid #ff9eb5;border-radius:11px;
+  background:rgba(255,255,255,.7);display:flex;align-items:center;justify-content:center;
+  font-size:20px;transition:.2s}
+.dot.on{background:linear-gradient(145deg,#ff8fab,#ff6b8a);border-color:#e84a6f;transform:scale(1.05)}
+.dot.err{animation:sh .35s;border-color:#e74c3c}
+@keyframes sh{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.pad{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:200px}
+.pad button{width:58px;height:44px;border:2px solid #ff9eb5;border-radius:12px;
+  background:rgba(255,255,255,.8);color:#c45a7a;font-size:19px;font-weight:600;cursor:pointer;
+  -webkit-tap-highlight-color:transparent}
+.pad button:active{transform:scale(.9);background:#ff6b8a;color:#fff}
+.pad .ok{background:linear-gradient(145deg,#ff8fab,#ff6b8a);color:#fff;border-color:#e84a6f}
+.sub{font-size:12px;color:#d47a9a;margin-top:8px;opacity:.7}
+.dc{position:absolute;font-size:18px;pointer-events:none;animation:fl 5s ease-in-out infinite}
+@keyframes fl{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+
+#s2{position:fixed;inset:0;display:none;background:linear-gradient(180deg,#fff5f7,#ffeef2 50%,#ffe4ec);z-index:20;overflow:hidden}
+#s2.on{display:block}
+.s2t{position:absolute;top:10%;left:0;right:0;text-align:center;font-size:17px;color:#c45a7a;font-style:italic;opacity:.85}
+.s2b{position:absolute;bottom:6%;left:0;right:0;text-align:center;font-size:13px;letter-spacing:2px;color:#c45a7a;opacity:.7}
+.s2n{position:absolute;bottom:6%;left:0;right:0;text-align:center;font-size:15px;letter-spacing:2px;color:#c45a7a;opacity:0;font-weight:600;transition:opacity .5s}
+.s2n.show{opacity:.85}
+
+#heart{position:absolute;left:50%;top:38%;transform:translate(-50%,-50%);
+  width:130px;height:117px;filter:drop-shadow(0 8px 20px rgba(255,100,140,.45));z-index:5}
+#heart.boom{animation:boom .5s forwards}
+@keyframes boom{0%{transform:translate(-50%,-50%) scale(1)}30%{transform:translate(-50%,-50%) scale(1.4)}100%{transform:translate(-50%,-50%) scale(0);opacity:0}}
+
+#bow{position:absolute;left:5%;bottom:16%;width:140px;height:100px;z-index:6}
+#bow svg{width:100%;height:100%;overflow:visible}
+#arr{position:absolute;left:55px;top:42px;width:75px;height:16px;z-index:7}
+#arr svg{width:75px;height:16px;display:block}
+
+#flyArr{position:fixed;width:75px;height:16px;z-index:200;display:none;pointer-events:none}
+#flyArr svg{width:75px;height:16px}
+
+.parts{position:fixed;inset:0;pointer-events:none;z-index:150}
+.pt{position:absolute;border-radius:50%;opacity:0}
+.fill{position:fixed;inset:0;background:#c2185b;opacity:0;z-index:300;transition:opacity 1s;pointer-events:none}
+.fill.on{opacity:1}
+.love{position:fixed;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:linear-gradient(180deg,#c2185b,#ad1457 50%,#880e4f);z-index:400;opacity:0;pointer-events:none;transition:opacity .7s}
+.love.on{opacity:1}
+.love .g{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px);
+  background-size:40px 40px}
+.love h1{font-size:clamp(38px,11vw,66px);font-weight:700;color:#fff;text-align:center;line-height:1.05;
+  text-shadow:0 4px 16px rgba(0,0,0,.2);z-index:2}
+.love .u{width:140px;height:3px;background:linear-gradient(90deg,transparent,#ffd54f,transparent);
+  border-radius:2px;margin:14px auto 16px;z-index:2}
+.love .to{font-size:14px;color:rgba(255,255,255,.75);font-style:italic;z-index:2}
+.love .w{position:absolute;top:8%;font-size:13px;color:rgba(255,255,255,.5);font-style:italic;z-index:2}
+
+#s3{position:fixed;inset:0;display:none;background:linear-gradient(180deg,#fff8f5,#ffeef2 45%,#ffe4ec);z-index:50;overflow:hidden}
+#s3.on{display:block}
+.s3t{position:absolute;left:5%;top:35%;max-width:42%;z-index:5}
+.s3a{font-size:13px;color:#b06a85;opacity:.8;margin-bottom:4px}
+.s3b{font-family:'Brush Script MT','Segoe Script',cursive;font-size:clamp(28px,8vw,44px);color:#9c2d5a;line-height:1.1;margin-bottom:6px}
+.s3c{font-size:12px;color:#b06a85;opacity:.75;font-style:italic}
+.tb{position:absolute;right:5%;bottom:3%;width:240px;height:380px;z-index:4}
+.tr{position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:12px;height:0;
+  background:linear-gradient(to top,#5d4037,#795548);border-radius:3px 3px 0 0;
+  transition:height 2s cubic-bezier(.3,.8,.3,1)}
+.tr.up{height:160px}
+.br{position:absolute;bottom:140px;left:50%;transform:translateX(-50%);width:200px;height:180px;opacity:0;transition:opacity .6s ease 1.5s}
+.br.up{opacity:1}
+.br i{position:absolute;display:block;background:#5d4037;border-radius:2px;transform-origin:bottom center;height:0;
+  transition:height 1.2s cubic-bezier(.3,.7,.3,1)}
+.br.up i{height:var(--h)}
+.bh{position:absolute;bottom:135px;left:50%;transform:translateX(-50%);display:flex;gap:3px;opacity:0;transition:opacity .5s ease 2.2s}
+.bh.up{opacity:1}
+.bh span{font-size:12px}
+.bl{position:absolute;bottom:140px;left:50%;transform:translateX(-50%);width:220px;height:200px;pointer-events:none}
+.bl span{position:absolute;opacity:0;transform:scale(0);transition:opacity .4s,transform .5s cubic-bezier(.2,.8,.3,1)}
+.bl span.on{opacity:1;transform:scale(1)}
+.tf{position:absolute;font-size:12px;opacity:.45;pointer-events:none;animation:fl 6s ease-in-out infinite}
+</style>
+</head>
+<body>
+
+<audio id="mus" loop preload="auto"><source src="song.mp3" type="audio/mpeg"></audio>
+
+<div id="s1">
+  <div class="ht">
+    <div class="ha"><span>RIRI</span></div>
+    <div class="hb"><span>RAOUF</span></div>
+  </div>
+  <p class="tt">Enter the secret code</p>
+  <div class="dots" id="dots">
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  </div>
+  <div class="pad">
+    <button data-n="1">1</button><button data-n="2">2</button><button data-n="3">3</button>
+    <button data-n="4">4</button><button data-n="5">5</button><button data-n="6">6</button>
+    <button data-n="7">7</button><button data-n="8">8</button><button data-n="9">9</button>
+    <button data-n="d">⌫</button><button data-n="0">0</button><button data-n="o" class="ok">✓</button>
+  </div>
+  <p class="sub">6 digits</p>
+  <span class="dc" style="top:5%;left:7%">💖</span>
+  <span class="dc" style="top:10%;right:8%">🧸</span>
+  <span class="dc" style="bottom:15%;left:5%">🌸</span>
+  <span class="dc" style="bottom:10%;right:6%">🌺</span>
+  <span class="dc" style="top:38%;right:4%">💕</span>
+</div>
+
+<div id="s2">
+  <p class="s2t">a little something, for you</p>
+  <div id="heart">
+    <svg viewBox="0 0 100 90" width="130" height="117">
+      <defs><radialGradient id="hg" cx="35%" cy="30%" r="65%">
+        <stop offset="0%" stop-color="#ffb3c6"/><stop offset="55%" stop-color="#ff6b8a"/><stop offset="100%" stop-color="#e84a6f"/>
+      </radialGradient></defs>
+      <path d="M50 82 C18 55 3 32 18 16 C28 6 43 10 50 24 C57 10 72 6 82 16 C97 32 82 55 50 82Z"
+        fill="url(#hg)" stroke="#e84a6f" stroke-width="1.2"/>
+      <ellipse cx="34" cy="26" rx="11" ry="7" fill="rgba(255,255,255,0.35)"/>
+    </svg>
+  </div>
+  <div id="bow">
+    <svg viewBox="0 0 120 100">
+      <path d="M80 10 Q110 50 80 90" fill="none" stroke="#5d4037" stroke-width="6" stroke-linecap="round"/>
+      <path d="M80 10 Q50 50 80 90" fill="none" stroke="#5d4037" stroke-width="6" stroke-linecap="round"/>
+      <rect x="70" y="42" width="18" height="16" rx="4" fill="#4e342e"/>
+      <line id="str" x1="80" y1="10" x2="80" y2="90" stroke="#8d6e63" stroke-width="2"/>
+    </svg>
+    <div id="arr">
+      <svg viewBox="0 0 80 16">
+        <line x1="5" y1="8" x2="58" y2="8" stroke="#6d4c41" stroke-width="3"/>
+        <polygon points="58,1 80,8 58,15" fill="#e84a6f"/>
+        <path d="M8 2 Q2 8 8 14" fill="none" stroke="#ff8fab" stroke-width="2.5"/>
+        <path d="M14 1 Q7 8 14 15" fill="none" stroke="#ff6b8a" stroke-width="2"/>
+      </svg>
+    </div>
+  </div>
+  <p class="s2b" id="s2b">TAP ANYWHERE</p>
+  <p class="s2n" id="s2n">RIRI & RAOUF</p>
+</div>
+
+<div id="flyArr">
+  <svg viewBox="0 0 80 16">
+    <line x1="5" y1="8" x2="58" y2="8" stroke="#6d4c41" stroke-width="3"/>
+    <polygon points="58,1 80,8 58,15" fill="#e84a6f"/>
+    <path d="M8 2 Q2 8 8 14" fill="none" stroke="#ff8fab" stroke-width="2.5"/>
+    <path d="M14 1 Q7 8 14 15" fill="none" stroke="#ff6b8a" stroke-width="2"/>
+  </svg>
+</div>
+
+<div class="parts" id="parts"></div>
+<div class="fill" id="fill"></div>
+<div class="love" id="love">
+  <div class="g"></div>
+  <p class="w">make a wish...</p>
+  <h1>I LOVE YOU<br>BBY</h1>
+  <div class="u"></div>
+  <p class="to">to someone worth celebrating</p>
+</div>
+
+<div id="s3">
+  <div class="s3t">
+    <p class="s3a">and... make it count</p>
+    <h2 class="s3b">YOU ARE MY LIFE</h2>
+    <p class="s3c">here's to a year that blooms</p>
+  </div>
+  <div class="tb">
+    <div class="tr" id="tr"></div>
+    <div class="br" id="br">
+      <i style="--h:85px;left:50%;bottom:0;transform:translateX(-50%) rotate(-50deg);width:4px"></i>
+      <i style="--h:70px;left:35%;bottom:30px;transform:rotate(-65deg);width:3.5px"></i>
+      <i style="--h:60px;left:22%;bottom:60px;transform:rotate(-80deg);width:3px"></i>
+      <i style="--h:48px;left:18%;bottom:85px;transform:rotate(-95deg);width:3px"></i>
+      <i style="--h:40px;left:26%;bottom:105px;transform:rotate(-115deg);width:2.5px"></i>
+      <i style="--h:85px;left:50%;bottom:0;transform:translateX(-50%) rotate(50deg);width:4px"></i>
+      <i style="--h:70px;left:65%;bottom:30px;transform:rotate(65deg);width:3.5px"></i>
+      <i style="--h:60px;left:78%;bottom:60px;transform:rotate(80deg);width:3px"></i>
+      <i style="--h:48px;left:82%;bottom:85px;transform:rotate(95deg);width:3px"></i>
+      <i style="--h:40px;left:74%;bottom:105px;transform:rotate(115deg);width:2.5px"></i>
+      <i style="--h:45px;left:43%;bottom:125px;transform:rotate(-20deg);width:3px"></i>
+      <i style="--h:45px;left:57%;bottom:125px;transform:rotate(20deg);width:3px"></i>
+      <i style="--h:30px;left:48%;bottom:140px;transform:rotate(-3deg);width:2.5px"></i>
+      <i style="--h:30px;left:52%;bottom:140px;transform:rotate(3deg);width:2.5px"></i>
+    </div>
+    <div class="bh" id="bh"><span>💗</span><span>💕</span><span>💖</span></div>
+    <div class="bl" id="bl"></div>
+  </div>
+  <span class="tf" style="top:16%;left:55%">💗</span>
+  <span class="tf" style="top:26%;left:70%">💕</span>
+  <span class="tf" style="top:40%;left:78%">💖</span>
+</div>
+
+<script>
+var mus=document.getElementById("mus");mus.volume=0.7;
+function pm(){mus.play().catch(function(){})}
+window.addEventListener("load",pm);
+document.body.addEventListener("click",pm,{once:true});
+document.body.addEventListener("touchstart",pm,{once:true});
+
+var CODE="071115",cur="",dots=document.querySelectorAll(".dot");
+function sd(){for(var i=0;i<6;i++){if(i<cur.length){dots[i].textContent="💗";dots[i].classList.add("on")}else{dots[i].textContent="";dots[i].classList.remove("on")}}}
+function ck(){if(cur.length<6)return;if(cur===CODE){setTimeout(go2,300)}else{for(var i=0;i<6;i++)dots[i].classList.add("err");setTimeout(function(){for(var j=0;j<6;j++){dots[j].classList.remove("err","on");dots[j].textContent=""}cur=""},400)}}
+var bs=document.querySelectorAll(".pad button");
+for(var i=0;i<bs.length;i++){bs[i].addEventListener("click",function(){var n=this.getAttribute("data-n");if(n==="d"){cur=cur.slice(0,-1);sd()}else if(n==="o"){ck()}else if(cur.length<6){cur+=n;sd();if(cur.length===6)setTimeout(ck,150)}})}
+
+function go2(){
+  document.getElementById("s1").style.display="none";
+  document.getElementById("s2").classList.add("on");
+  setTimeout(function(){document.getElementById("s2b").style.opacity="0";document.getElementById("s2n").classList.add("show")},600);
+}
+
+var done=false;
+function shoot(){
+  if(done)return;
+  done=true;
+  var arr=document.getElementById("arr");
+  var fly=document.getElementById("flyArr");
+  var heart=document.getElementById("heart");
+  var str=document.getElementById("str");
+  var w=window.innerWidth,h=window.innerHeight;
+  var r=arr.getBoundingClientRect();
+  arr.style.visibility="hidden";
+  fly.style.display="block";
+  fly.style.left=r.left+"px";
+  fly.style.top=r.top+"px";
+  fly.style.transition="none";
+  if(str)str.setAttribute("x2","55");
+  void fly.offsetWidth;
+  fly.style.transition="left 0.75s cubic-bezier(0.2,0.7,0.3,1), top 0.75s cubic-bezier(0.2,0.7,0.3,1)";
+  fly.style.left=(w/2-40)+"px";
+  fly.style.top=(h*0.38-8)+"px";
+  if(str)setTimeout(function(){str.setAttribute("x2","80")},100);
+  setTimeout(function(){
+    heart.classList.add("boom");
+    fly.style.opacity="0";
+    exp(w/2,h*0.38);
+    setTimeout(function(){
+      document.getElementById("fill").classList.add("on");
+      setTimeout(function(){
+        document.getElementById("love").classList.add("on");
+        setTimeout(go3,4000);
+      },800);
+    },350);
+  },750);
+}
+
+document.getElementById("s2").addEventListener("click",shoot);
+document.getElementById("s2").addEventListener("touchend",function(e){e.preventDefault();shoot()},{passive:false});
+
+function exp(x,y){
+  var box=document.getElementById("parts");
+  var c=["#ff6b8a","#ff8fab","#ffb3c6","#e84a6f","#fff","#ffd1dc"];
+  for(var i=0;i<28;i++){
+    var p=document.createElement("div");p.className="pt";
+    p.style.left=x+"px";p.style.top=y+"px";p.style.background=c[i%c.length];
+    var s=6+Math.random()*13;p.style.width=p.style.height=s+"px";box.appendChild(p);
+    (function(el,k){var a=(Math.PI*2*k)/28+Math.random()*0.4;var d=40+Math.random()*140;
+      var tx=Math.cos(a)*d,ty=Math.sin(a)*d-30;
+      requestAnimationFrame(function(){el.style.transition="transform .8s cubic-bezier(.1,.6,.3,1),opacity .8s";
+        el.style.opacity="1";el.style.transform="translate("+tx+"px,"+ty+"px) scale(0)"})
+    })(p,i);
+  }
+}
+
+function go3(){
+  document.getElementById("s2").style.display="none";
+  document.getElementById("fill").style.display="none";
+  document.getElementById("love").style.display="none";
+  document.getElementById("s3").classList.add("on");
+  setTimeout(function(){
+    document.getElementById("tr").classList.add("up");
+    document.getElementById("br").classList.add("up");
+    document.getElementById("bh").classList.add("up");
+    setTimeout(blooms,2800);
+  },300);
+}
+
+function blooms(){
+  var box=document.getElementById("bl");
+  var hs=["💗","💕","💖","💓","🧡","💛"];
+  var L=[[15,35,17],[8,65,15],[5,95,14],[12,120,13],[25,140,14],
+    [195,35,17],[202,65,15],[205,95,14],[198,120,13],[185,140,14],
+    [38,15,16],[55,5,15],[80,3,17],[50,30,13],[70,20,14],
+    [125,3,17],[150,5,15],[170,15,16],[135,20,14],[155,30,13],
+    [100,10,15],[90,35,14],[110,35,14],[85,65,13],[120,65,13],
+    [90,95,15],[110,95,14],[100,120,16],[100,145,17],
+    [28,50,12],[42,80,13],[32,105,12],[180,50,12],[165,80,13],
+    [175,105,12],[65,50,13],[140,50,13],[75,85,12],[130,85,12],
+    [90,110,13],[115,110,13],[48,45,14],[160,45,14],[85,25,13],
+    [120,25,13],[100,75,14],[65,110,12],[140,110,12],[100,45,15]];
+  for(var i=0;i<L.length;i++){(function(it,ix){var s=document.createElement("span");
+    s.textContent=hs[ix%hs.length];s.style.left=it[0]+"px";s.style.top=it[1]+"px";s.style.fontSize=it[2]+"px";
+    box.appendChild(s);setTimeout(function(){s.classList.add("on")},65*ix)})(L[i],i)}
+}
+</script>
+</body>
+</html>
